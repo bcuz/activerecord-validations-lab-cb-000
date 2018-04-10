@@ -1,10 +1,26 @@
 
 class GoodnessValidator < ActiveModel::Validator
   def validate(record)
-    bad = ["Won't Believe", "Secret", "Top", "Guess"]
-    if !bad.include? record.title
-      record.errors[:base] << "erro"
+
+    # good = true
+    bad = ["Believe", "Secret", "Top", "Guess"]
+
+    if record.title.instance_of? Post
+    arr = record.title.split(' ')
+    ans = arr.collect do |word|
+      if !bad.include? word
+        word
+      end
     end
+
+    # binding.pry
+
+    if (ans.compact.size == arr.size)
+    record.errors[:base] << "erro"
+  end
+
+end
+#
   end
 end
 
