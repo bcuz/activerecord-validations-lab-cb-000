@@ -20,16 +20,25 @@ class GoodnessValidator < ActiveModel::Validator
   end
 
 end
-#
+
+  end
+end
+
+
+class EmailValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    unless value =~ /(believe|secret|top|guess)/i
+      record.errors[attribute] << (options[:message] || "is not an email")
+    end
   end
 end
 
 
 class Post < ActiveRecord::Base
-  validates :title, presence: true
+  validates :title, presence: true, email: true
   validates :content, length: { minimum: 250 }
   validates :summary, length: { maximum: 250 }
   validates :category, inclusion: { in: %w(Fiction Non-Fiction) }
-  validates_with GoodnessValidator
+  # validates_with GoodnessValidator
 
 end
